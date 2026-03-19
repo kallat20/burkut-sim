@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-22.04
+    container:
+      image: ros:humble
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          apt-get update
+          apt-get install -y \
+            ros-humble-ros-gzharmonic-bridge \
+            ros-humble-ros-gzharmonic-interfaces \
+            ros-humble-geometry-msgs \
+            ros-humble-std-msgs \
+            python3-colcon-common-extensions \
+            python3-pip
+          pip3 install setuptools
+
+      - name: rosdep install
+        run: |
+          . /opt/ros/humble/setup.sh
+          rosdep update
+          rosdep install --from-paths src --ignore-src -r -y
+
+      - name: Build
+        run: |
+          . /opt/ros/humble/setup.sh
+          colcon build --symlink-install \
+            --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo
+
+      - name: Test
+        run: |
+          . /opt/ros/humble/setup.sh
+          . install/setup.sh
+          colcon test --return-code-on-test-failure
