@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-source "$REPO_ROOT/tools/activate.sh"
 
 OUT_DIR="$REPO_ROOT/runs/$(date +%F-%H-%M-%S)"
 mkdir -p "$OUT_DIR"
@@ -15,7 +13,7 @@ mkdir -p "$OUT_DIR"
   echo "px4_dir=${PX4_DIR:-unknown}"
 } > "$OUT_DIR/meta.txt"
 
-env | sort                                          > "$OUT_DIR/env.txt"              2>&1 || true
+env | sort                                         > "$OUT_DIR/env.txt"              2>&1 || true
 ros2 node list                                     > "$OUT_DIR/ros2_nodes.txt"       2>&1 || true
 ros2 topic list                                    > "$OUT_DIR/ros2_topics.txt"      2>&1 || true
 ros2 topic echo /clock --once                      > "$OUT_DIR/clock_once.yaml"      2>&1 || true

@@ -1,0 +1,54 @@
+<?xml version="1.0" ?>
+<launch>
+
+    <!--Parametreler-->
+
+    <arg name="world" default="test"/>
+    <arg name="plane" default="advanced_plane"/>
+    <arg name="airframe_id" default="4008"/>
+    <arg name="instance" default="0"/>
+
+    <!--Spawn -->
+
+    <arg name="x" default="-45.0"/>
+    <arg name="y" default="0"/>
+    <arg name="z" default="0.5"/>
+    <arg name="roll" default="0"/>
+    <arg name="pitch" default="0"/>
+    <arg name="yaw" default="0"/>
+    <arg name="headless" default="false"/>
+
+  <!-- ===== GZ_SIM_RESOURCE_PATH ===== -->
+  <append_env name="GZ_SIM_RESOURCE_PATH"
+              value="$(find-pkg-share burkut_worlds)/worlds"/>
+  <append_env name="GZ_SIM_RESOURCE_PATH"
+              value="$(find-pkg-share burkut_worlds)/models"/>
+
+  <!-- ===== 1. Gazebo Harmonic ===== -->
+  <include file="$(find-pkg-share ros_gz_sim)/launch/gz_sim.launch.py">
+    <arg name="gz_args"
+         value="-r $(find-pkg-share burkut_worlds)/worlds/$(var world).sdf"/>
+  </include>
+
+  <!-- ===== 2. Advanced Plane spawn ===== -->
+  <node pkg="ros_gz_sim"
+        exec="create"
+        name="spawn_advanced_plane"
+        output="screen"
+        args="-name $(var plane)
+              -x $(var x) -y $(var y) -z $(var z)
+              -R $(var roll) -P $(var pitch) -Y $(var yaw)
+              -file $(find-pkg-share burkut_worlds)/models/advanced_plane/model.sdf">
+  </node>
+
+  <!-- ===== 3. Clock Bridge ===== -->
+  <node pkg="ros_gz_bridge"
+        exec="parameter_bridge"
+        name="bridge_clock"
+        output="screen"
+        args="/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock">
+  </node>
+
+</launch>
+
+

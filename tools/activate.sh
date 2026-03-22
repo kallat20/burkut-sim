@@ -2,9 +2,10 @@
 # Usage: source tools/activate.sh
 set -euo pipefail
 
-_sourced=0
-if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
-  _sourced=1
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+  echo "[activate] HATA: Bu script 'source' ile çalıştırılmalı." >&2
+  echo "[activate] Kullanım: source tools/activate.sh" >&2
+  exit 1
 fi
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -13,13 +14,6 @@ WS="$REPO_ROOT"
 # ROS 2 Humble underlay
 set +u
 source /opt/ros/humble/setup.bash
-
-# px4_msgs / px4_ros_com overlay
-if [[ -f "$HOME/ros2_ws/install/setup.bash" ]]; then
-  source "$HOME/ros2_ws/install/setup.bash"
-else
-  echo "[activate] WARN: ~/ros2_ws/install/setup.bash bulunamadı (px4_msgs eksik)"
-fi
 set -u
 
 # Burkut-sim workspace overlay
@@ -35,7 +29,10 @@ fi
 export BURKUT_SIM_ACTIVE=1
 export BURKUT_SIM_ROOT="$REPO_ROOT"
 export PX4_DIR="$HOME/PX4-Autopilot"
-export PATH="$PATH:$HOME/PX4-Autopilot/Micro-XRCE-DDS-Agent/build"
-export GZ_SIM_RESOURCE_PATH="$REPO_ROOT/src/burkut_worlds/worlds:${GZ_SIM_RESOURCE_PATH:-}"
+if [[ ! -d "$PX4_DIR" ]]; then
+  echo "[activate] WARN: PX4_DIR bulunamadı: $PX4_DIR"
+fi
+export PATH="$PATH:$PX4_DIR/Micro-XRCE-DDS-Agent/build"
+export GZ_SIM_RESOURCE_PATH="$REPO_ROOT/src/burkut_worlds/worlds:$REPO_ROOT/src/burkut_worlds/models:$PX4_DIR/Tools/simulation/gz/models:$PX4_DIR/Tools/simulation/gz/worlds:${GZ_SIM_RESOURCE_PATH:-}"
 
 echo "[activate] OK: ROS_DISTRO=$ROS_DISTRO | ROOT=$REPO_ROOT"

@@ -1,0 +1,308 @@
+<?xml version="1.0" ?>
+<sdf version="1.9">
+  <world name="test">
+
+    <!-- Fizik motoru -->
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <!-- Gerekli eklentiler (Gazebo Sim 8 zorunlu) -->
+    <plugin filename="gz-sim-physics-system"
+            name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-user-commands-system"
+            name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-scene-broadcaster-system"
+            name="gz::sim::systems::SceneBroadcaster"/>
+
+    <!-- Işık -->
+    <light name="sun" type="directional">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <!-- Zemin -->
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry><plane><normal>0 0 1</normal><size>500 500</size></plane></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><plane><normal>0 0 1</normal><size>500 500</size></plane></geometry>
+          <material>
+            <ambient>0.2 0.5 0.1 1</ambient>
+            <diffuse>0.2 0.5 0.1 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+   
+    <!--   KALKIŞ/İNİŞ PİSTİ  -->
+    
+    <!-- Pist gövdesi: 100m x 10m, merkez orijinde -->
+    <model name="runway_base">
+      <static>true</static>
+      <pose>0 0 0.01 0 0 0</pose>
+      <link name="link">
+        <visual name="asphalt">
+          <geometry>
+            <box><size>100 10 0.01</size></box>
+          </geometry>
+          <material>
+            <ambient>0.15 0.15 0.15 1</ambient>
+            <diffuse>0.15 0.15 0.15 1</diffuse>
+          </material>
+        </visual>
+        <collision name="col">
+          <geometry><box><size>100 10 0.01</size></box></geometry>
+        </collision>
+      </link>
+    </model>
+
+    <!-- Merkez çizgisi (beyaz, kesik kesik için 4 parça) -->
+    <!-- Aralarına 10m boşluk, her parça 15*0,5m -->
+    <model name="cl_0"><static>true</static><pose>-37.5 0 0.01 0 0 0</pose>
+      <link name="l"><visual name="v"><geometry><box><size>15 0.5 0.02</size></box></geometry>
+        <material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material>
+      </visual></link></model>
+    
+    <model name="cl_1"><static>true</static><pose>-12.5 0 0.01 0 0 0</pose>
+      <link name="l"><visual name="v"><geometry><box><size>15 0.5 0.02</size></box></geometry>
+        <material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material>
+      </visual></link></model>
+    
+    <model name="cl_2"><static>true</static><pose>12.5 0 0.01 0 0 0</pose>
+      <link name="l"><visual name="v"><geometry><box><size>15 0.5 0.02</size></box></geometry>
+        <material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material>
+      </visual></link></model>
+    
+    <model name="cl_3"><static>true</static><pose>37.5 0 0.01 0 0 0</pose>
+      <link name="l"><visual name="v"><geometry><box><size>15 0.5 0.02</size></box></geometry>
+        <material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material>
+      </visual></link></model>
+
+    <!-- Direkler-->
+    <!--D=0,5m L=3m-->
+    <model name="pole_11">
+      <static>true</static>
+      <pose>-50 -15 0 0 0 0</pose>
+      <link name="link_11">
+        <visual name="seg_alt">
+          <pose>0 0 0.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+          <material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material>
+        </visual>
+        <collision name="seg_alt_col">
+          <pose>0 0 0.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+        </collision>
+
+        <visual name="seg_orta">
+          <pose>0 0 1.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+          <material><ambient>1 0 0 1</ambient><diffuse>1 0 0 1</diffuse></material>
+        </visual>
+        <collision name="seg_orta_col">
+          <pose>0 0 1.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+        </collision>
+
+        <visual name="seg_ust">
+          <pose>0 0 2.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+          <material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material>
+        </visual>
+        <collision name="seg_ust_col">
+          <pose>0 0 2.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+        </collision>
+      </link>
+    </model>
+
+    <model name="pole_12">
+      <static>true</static>
+      <pose>-50 -18 0 0 0 0</pose>
+      <link name="link_12">
+        <visual name="seg_alt">
+          <pose>0 0 0.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+          <material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material>
+        </visual>
+        <collision name="seg_alt_col">
+          <pose>0 0 0.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+        </collision>
+
+        <visual name="seg_orta">
+          <pose>0 0 1.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+          <material><ambient>1 0 0 1</ambient><diffuse>1 0 0 1</diffuse></material>
+        </visual>
+        <collision name="seg_orta_col">
+          <pose>0 0 1.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+        </collision>
+
+        <visual name="seg_ust">
+          <pose>0 0 2.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+          <material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material>
+        </visual>
+        <collision name="seg_ust_col">
+          <pose>0 0 2.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+        </collision>
+      </link>
+    </model>
+
+    <model name="pole_21">
+      <static>true</static>
+      <pose>0 -18 0 0 0 0</pose>
+      <link name="link_21">
+        <visual name="seg_alt">
+          <pose>0 0 0.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+          <material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material>
+        </visual>
+        <collision name="seg_alt_col">
+          <pose>0 0 0.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+        </collision>
+
+        <visual name="seg_orta">
+          <pose>0 0 1.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+          <material><ambient>1 0 0 1</ambient><diffuse>1 0 0 1</diffuse></material>
+        </visual>
+        <collision name="seg_orta_col">
+          <pose>0 0 1.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+        </collision>
+
+        <visual name="seg_ust">
+          <pose>0 0 2.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+          <material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material>
+        </visual>
+        <collision name="seg_ust_col">
+          <pose>0 0 2.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+        </collision>
+      </link>
+    </model>
+
+    <model name="pole_22">
+      <static>true</static>
+      <pose>0 -21 0 0 0 0</pose>
+      <link name="link_22">
+        <visual name="seg_alt">
+          <pose>0 0 0.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+          <material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material>
+        </visual>
+        <collision name="seg_alt_col">
+          <pose>0 0 0.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+        </collision>
+
+        <visual name="seg_orta">
+          <pose>0 0 1.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+          <material><ambient>1 0 0 1</ambient><diffuse>1 0 0 1</diffuse></material>
+        </visual>
+        <collision name="seg_orta_col">
+          <pose>0 0 1.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+        </collision>
+
+        <visual name="seg_ust">
+          <pose>0 0 2.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+          <material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material>
+        </visual>
+        <collision name="seg_ust_col">
+          <pose>0 0 2.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+        </collision>
+      </link>
+    </model>
+
+    <model name="pole_31">
+      <static>true</static>
+      <pose>50 -15 0 0 0 0</pose>
+      <link name="link_31">
+        <visual name="seg_alt">
+          <pose>0 0 0.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+          <material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material>
+        </visual>
+        <collision name="seg_alt_col">
+          <pose>0 0 0.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+        </collision>
+
+        <visual name="seg_orta">
+          <pose>0 0 1.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+          <material><ambient>1 0 0 1</ambient><diffuse>1 0 0 1</diffuse></material>
+        </visual>
+        <collision name="seg_orta_col">
+          <pose>0 0 1.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+        </collision>
+
+        <visual name="seg_ust">
+          <pose>0 0 2.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+          <material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material>
+        </visual>
+        <collision name="seg_ust_col">
+          <pose>0 0 2.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+        </collision>
+      </link>
+    </model>
+
+    <model name="pole_32">
+      <static>true</static>
+      <pose>50 -18 0 0 0 0</pose>
+      <link name="link_32">
+        <visual name="seg_alt">
+          <pose>0 0 0.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+          <material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material>
+        </visual>
+        <collision name="seg_alt_col">
+          <pose>0 0 0.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+        </collision>
+
+        <visual name="seg_orta">
+          <pose>0 0 1.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+          <material><ambient>1 0 0 1</ambient><diffuse>1 0 0 1</diffuse></material>
+        </visual>
+        <collision name="seg_orta_col">
+          <pose>0 0 1.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+        </collision>
+
+        <visual name="seg_ust">
+          <pose>0 0 2.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+          <material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material>
+        </visual>
+        <collision name="seg_ust_col">
+          <pose>0 0 2.5 0 0 0</pose>
+          <geometry><cylinder><radius>0.10</radius><length>1.0</length></cylinder></geometry>
+        </collision>
+      </link>
+    </model>
+  </world>
+</sdf>
