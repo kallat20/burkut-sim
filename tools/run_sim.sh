@@ -16,6 +16,40 @@ PX4_CMD="source '$REPO_ROOT/tools/activate.sh' \
   && ./build/px4_sitl_default/bin/px4"
 HEALTH_CMD="source '$REPO_ROOT/tools/activate.sh' && set +e && while true; do '$REPO_ROOT/tools/check_health.sh' || true; sleep 5; done"
 SHELL_CMD="source '$REPO_ROOT/tools/activate.sh' && cd '$REPO_ROOT' && exec bash -i"
+QGC_PATH="${QGC_PATH:-$HOME/QGroundControl.AppImage}"
+
+if [[ "${1-}" == "--stop" || "${1-}" == "stop" ]]; then
+  echo "[run_sim] Tüm sim bileşenleri kapatılıyor..."
+
+  tmux kill-session -t "$SESSION" 2>/dev/null && echo "  [ok] tmux session '$SESSION' kapatıldı" || echo "  [--] tmux session bulunamadı"
+
+  for proc in \
+    "gz sim" "gz" "gzserver" "gzclient" "ruby.*gz" \
+    "px4" \
+    "MicroXRCEAgent" \
+    "ros2" "ros2_node" \
+    "QGroundControl" \
+    "check_health"
+  do
+    pkill -f "$proc" 2>/dev/null && echo "  [ok] '$proc' öldürüldü" || true
+  done
+
+  sleep 1
+
+  # Hala ayakta kalanları SIGKILL ile bitir
+  for proc in \
+    "gz sim" "gz" "gzserver" "gzclient" \
+    "px4" \
+    "MicroXRCEAgent" \
+    "ros2" \
+    "QGroundControl"
+  do
+    pkill -9 -f "$proc" 2>/dev/null || true
+  done
+
+  echo "[run_sim] Temizlik tamamlandı."
+  exit 0
+fi
 
 if [ -n "${TMUX-}" ]; then
   echo "[run_sim] Zaten tmux içindesin. Çıkıp yeniden çalıştır ya da:"
@@ -47,9 +81,24 @@ tmux split-window -v -t "$SESSION:0.0" \
 
 tmux select-layout -t "$SESSION:0" tiled
 
-# Window 2: Health monitor
+# Log klasörünü oluştur ve Core/DDS/PX4/Shell pane'lerini yönlendir
+LOG_DIR="$REPO_ROOT/runs/$(date +%F-%H-%M-%S)"
+mkdir -p "$LOG_DIR"
+tmux pipe-pane -o -t "$SESSION:0.0" "cat >> '$LOG_DIR/core.log'"
+tmux pipe-pane -o -t "$SESSION:0.1" "cat >> '$LOG_DIR/dds.log'"
+tmux pipe-pane -o -t "$SESSION:0.2" "cat >> '$LOG_DIR/px4.log'"
+tmux pipe-pane -o -t "$SESSION:0.3" "cat >> '$LOG_DIR/shell.log'"
+echo "[run_sim] Loglar: $LOG_DIR"
+
+# Window 2: Health monitor (pipe-pane window oluşturulduktan sonra)
 tmux new-window -t "$SESSION:1" -n "Health" \
   "bash -c \"$HEALTH_CMD\""
+tmux pipe-pane -o -t "$SESSION:1.0" "cat >> '$LOG_DIR/health.log'"
+
+# Window 3: QGroundControl (PX4 ayağa kalksın diye 8sn bekle)
+tmux new-window -t "$SESSION:2" -n "QGC" \
+  "bash -c \"sleep 8 && '$QGC_PATH'; echo '[qgc] çıktı - ENTER ile kapat'; read\""
+tmux pipe-pane -o -t "$SESSION:2.0" "cat >> '$LOG_DIR/qgc.log'"
 
 tmux select-window -t "$SESSION:0"
 exec tmux attach -t "$SESSION"

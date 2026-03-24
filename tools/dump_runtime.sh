@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "$REPO_ROOT/tools/activate.sh"
 
 OUT_DIR="$REPO_ROOT/runs/$(date +%F-%H-%M-%S)"
 mkdir -p "$OUT_DIR"

@@ -34,5 +34,9 @@ if [[ ! -d "$PX4_DIR" ]]; then
 fi
 export PATH="$PATH:$PX4_DIR/Micro-XRCE-DDS-Agent/build"
 export GZ_SIM_RESOURCE_PATH="$REPO_ROOT/src/burkut_worlds/worlds:$REPO_ROOT/src/burkut_worlds/models:$PX4_DIR/Tools/simulation/gz/models:$PX4_DIR/Tools/simulation/gz/worlds:${GZ_SIM_RESOURCE_PATH:-}"
-
+# NVIDIA PRIME: Gazebo'nun NVIDIA GPU'yu kullanması için
+export __NV_PRIME_RENDER_OFFLOAD=1
+export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
+export __GLX_VENDOR_LIBRARY_NAME=nvidia
+export __EGL_VENDOR_LIBRARY_FILENAMES=/usr/share/glvnd/egl_vendor.d/10_nvidia.json
 echo "[activate] OK: ROS_DISTRO=$ROS_DISTRO | ROOT=$REPO_ROOT"
