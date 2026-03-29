@@ -73,7 +73,7 @@ tmux split-window -h -t "$SESSION:0" \
 
 # Sağ alt: PX4 SITL (Gazebo'nun ayağa kalkması için 4sn bekle)
 tmux split-window -v -t "$SESSION:0.1" \
-  "bash -c \"sleep 4 && $PX4_CMD; echo '[px4] çıktı - ENTER ile kapat'; read\""
+  "bash -c \"sleep 8 && $PX4_CMD; echo '[px4] çıktı - ENTER ile kapat'; read\""
 
 # Sol alt: interaktif shell
 tmux split-window -v -t "$SESSION:0.0" \

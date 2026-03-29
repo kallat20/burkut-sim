@@ -87,7 +87,7 @@
               <noise type="gaussian">
                 <mean>0</mean>
                 <stddev>0.004</stddev>
-                <dynamic_bias_stddev>0.006</dynamic_bias_stddev>
+                <dynamic_bias_stddev>0.002</dynamic_bias_stddev>
                 <dynamic_bias_correlation_time>300</dynamic_bias_correlation_time>
               </noise>
             </x>
@@ -95,7 +95,7 @@
               <noise type="gaussian">
                 <mean>0</mean>
                 <stddev>0.004</stddev>
-                <dynamic_bias_stddev>0.006</dynamic_bias_stddev>
+                <dynamic_bias_stddev>0.002</dynamic_bias_stddev>
                 <dynamic_bias_correlation_time>300</dynamic_bias_correlation_time>
               </noise>
             </y>
@@ -103,7 +103,7 @@
               <noise type="gaussian">
                 <mean>0</mean>
                 <stddev>0.004</stddev>
-                <dynamic_bias_stddev>0.006</dynamic_bias_stddev>
+                <dynamic_bias_stddev>0.002</dynamic_bias_stddev>
                 <dynamic_bias_correlation_time>300</dynamic_bias_correlation_time>
               </noise>
             </z>
@@ -155,6 +155,16 @@
         <update_rate>30</update_rate>
       </sensor>
     </link>
+
+    <!-- Gemini 2L Camera -->
+    <include merge="true">
+      <uri>model://basic_camera</uri>
+      <pose relative_to="base_link">0.18 0 0.02 0 0 0</pose>
+    </include>
+    <joint name="camera_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>camera_body</child>
+    </joint>
     <link name='rotor_puller'>
       <pose>0.3 0 0.0 0 1.57 0</pose>
       <inertial>
