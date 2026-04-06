@@ -8,14 +8,16 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
 
-# rosidl_generate_interfaces buraya eklenecek — msg/ dosyaları oluşturulunca:
-# find_package(rosidl_default_generators REQUIRED)
-# rosidl_generate_interfaces(${PROJECT_NAME}
-#   msg/ObstacleArray.msg
-#   msg/WaypointArray.msg
-#   DEPENDENCIES geometry_msgs std_msgs
-# )
+
+rosidl_generate_interfaces(${PROJECT_NAME}
+  "msg/Obstacle.msg"
+  "msg/ObstacleArray.msg"
+  "msg/Waypoint.msg"
+  "msg/WaypointArray.msg"
+  DEPENDENCIES geometry_msgs std_msgs
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

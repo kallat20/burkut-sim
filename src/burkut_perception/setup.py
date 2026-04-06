@@ -24,6 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
+            'pole_ai_test = burkut_perception.pole_ai_test:main',
         ],
     },
 )

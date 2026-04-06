@@ -115,7 +115,7 @@
       </visual></link></model>
 
     <!-- Direkler-->
-    <!--D=0,5m L=3m-->
+    <!--D=0,2 m L=3m-->
     <model name="pole_11">
       <static>true</static>
       <pose>-50 -15 0 0 0 0</pose>

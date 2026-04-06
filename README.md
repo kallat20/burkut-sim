@@ -47,7 +47,7 @@ source tools/activate.sh      # Ortamı aktive et
 
 ## Simülasyon Başlatma
 
-### Otomatik (TAMER BUNU ÇALIŞTIR!!!!) — `run_sim.sh`
+### Otomatik (Tamer buradan çalıştır) — `run_sim.sh`
 
 ```bash
 ./tools/run_sim.sh        # Tüm bileşenleri tmux'ta başlat

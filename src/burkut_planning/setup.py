@@ -24,6 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
+            'planning_test = burkut_planning.planning_test:main',
         ],
     },
 )
