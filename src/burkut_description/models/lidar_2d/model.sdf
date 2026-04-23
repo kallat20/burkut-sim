@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+
+<!-- SF45/B 2d lidar modeli
+    -Menzil: 0,2m-50m
+    -Fov: 320 derece
+    -lineer Resolution: 1cm
+    -horizontal resolution: <0,2 derece
+    -accuracy: +-10cm
+    -update rate: 50Hz
+ -->
+ 
+  <model name="lidar_2d">
+    <static>false</static>
+    <link name="lidar_link">
+      <pose>0 0 0 0 0 0</pose>
+      
+      <inertial>
+        <mass>0.059</mass>
+        <inertia>
+          <ixx>0.00001</ixx>
+          <iyy>0.00001</iyy>
+          <izz>0.00001</izz>
+          <ixy>0.0</ixy>
+          <ixz>0.0</ixz>
+          <iyz>0.0</iyz>
+        </inertia>
+      </inertial>
+
+      <visual name="lidar_visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.0512 0.048 0.0433</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.1 0.1 0.1 1</ambient>
+          <diffuse>0.1 0.1 0.1 1</diffuse>
+        </material>
+      </visual>
+      <collision name="lidar_collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.0512 0.048 0.0433</size>
+          </box>
+        </geometry>
+      </collision>
+      
+      <sensor name="lidar_2d" type="lidar">
+        <pose>0 0 0.0169 0 0 0</pose>
+        <topic>/lidar/scan</topic>
+        <update_rate>50</update_rate>
+
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>320</samples>
+              <resolution>1</resolution>
+              <min_angle>-2.79253</min_angle>
+              <max_angle>2.79253</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.2</min>
+            <max>50.0</max>
+            <resolution>0.01</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+        <always_on>1</always_on>
+        <visualize>true</visualize>
+      </sensor>
+    </link>
+  </model>
+</sdf>
+
+        

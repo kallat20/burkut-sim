@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <model name="pi_cam_16mm">
+    <static>false</static>
+    <link name="cam_link">
+      <pose>0 0 0 0 0 0</pose>
+      <inertial>
+        <mass>0.03</mass>
+        <inertia>
+          <ixx>1e-05</ixx>
+          <iyy>1e-05</iyy>
+          <izz>1e-05</izz>
+          <ixy>0.0</ixy>
+          <ixz>0.0</ixz>
+          <iyz>0.0</iyz>
+        </inertia>
+      </inertial>
+      
+      <visual name="cam_visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.01143 0.038 0.038</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.1 0.1 0.1 1</ambient>
+          <diffuse>0.1 0.1 0.1 1</diffuse>
+        </material>
+      </visual>
+      <collision name="cam_collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.01143 0.038 0.038</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <visual name="lens_visual">
+        <pose>0.01143 0 0 0 1.5708 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.0195</radius>
+            <length>0.05</length>
+          </cylinder>
+        </geometry>
+        <material>
+          <ambient>0.1 0.1 0.1 1</ambient>
+          <diffuse>0.1 0.1 0.1 1</diffuse>
+        </material>
+      </visual>
+      <collision name="lens_collision">
+        <pose>0.01143 0 0 0 1.5708 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.0195</radius>
+            <lenght>0.05</lenght>
+          </cylinder>
+        </geometry>
+      </collision>
+      
+      <sensor name="piCam_16mm" type="camera">
+        <pose>0.062 0 0 0 0 0</pose>
+        <always_on>true</always_on>
+        <update_rate>30</update_rate>
+        <visualize>false</visualize>
+        <topic>/camera/image_raw</topic>
+
+        <camera name="piCam_16mm_sensor">
+          <camera_info_topic>/camera/camera_info</camera_info_topic>
+          <optical_frame_id>camera_optical_frame</optical_frame_id>
+          <horizontal_fov>0.388</horizontal_fov>
+          <image>
+            <width>1920</width>
+            <height>1080</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.2</near>
+            <far>300.0</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.007</stddev>
+          </noise>
+        </camera>
+      </sensor>
+    </link>
+  </model>
+</sdf>

@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdf version='1.9'>
+  <model name='burkut_test_sbt'>
+    <pose>0 0 0.5 0 0 0</pose>
+    <!-- GOVDE -->
+    <link name='base_link'>
+      <pose>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>1.4758</mass>
+        <inertia>
+          <ixx>0.035441234</ixx>
+          <iyy>0.082690809</iyy>
+          <izz>0.113087902</izz>
+          <ixy>0.000002341</ixy>
+          <ixz>-0.000218251</ixz>
+          <iyz>0.000000142</iyz>
+        </inertia>
+      </inertial>
+      <collision name='base_link_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://burkut_test/meshes/govde.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <max_vel>10</max_vel>
+              <min_depth>0.01</min_depth>
+            </ode>
+          </contact>
+          <friction>
+            <ode />
+          </friction>
+        </surface>
+      </collision>
+      <visual name='base_link_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://burkut_test/meshes/govde.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <ambient>0.16 0.19 0.20 1.0</ambient>
+          <diffuse>0.16 0.19 0.20 1.0</diffuse>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <velocity_decay />
+      <self_collide>0</self_collide>
+      <!-- pixhawk sensörler -->
+      <sensor name="imu_sensor" type="imu">
+        <gz_frame_id>base_link</gz_frame_id>
+        <always_on>1</always_on>
+        <update_rate>250</update_rate>
+        <imu>
+          <angular_velocity>
+            <x>
+              <noise type="gaussian">
+                <mean>0</mean>
+                <stddev>0.0003394</stddev>
+                <dynamic_bias_stddev>3.8785e-05</dynamic_bias_stddev>
+                <dynamic_bias_correlation_time>1000</dynamic_bias_correlation_time>
+              </noise>
+            </x>
+            <y>
+              <noise type="gaussian">
+                <mean>0</mean>
+                <stddev>0.0003394</stddev>
+                <dynamic_bias_stddev>3.8785e-05</dynamic_bias_stddev>
+                <dynamic_bias_correlation_time>1000</dynamic_bias_correlation_time>
+              </noise>
+            </y>
+            <z>
+              <noise type="gaussian">
+                <mean>0</mean>
+                <stddev>0.0003394</stddev>
+                <dynamic_bias_stddev>3.8785e-05</dynamic_bias_stddev>
+                <dynamic_bias_correlation_time>1000</dynamic_bias_correlation_time>
+              </noise>
+            </z>
+          </angular_velocity>
+          <linear_acceleration>
+            <x>
+              <noise type="gaussian">
+                <mean>0</mean>
+                <stddev>0.004</stddev>
+                <dynamic_bias_stddev>0.002</dynamic_bias_stddev>
+                <dynamic_bias_correlation_time>300</dynamic_bias_correlation_time>
+              </noise>
+            </x>
+            <y>
+              <noise type="gaussian">
+                <mean>0</mean>
+                <stddev>0.004</stddev>
+                <dynamic_bias_stddev>0.002</dynamic_bias_stddev>
+                <dynamic_bias_correlation_time>300</dynamic_bias_correlation_time>
+              </noise>
+            </y>
+            <z>
+              <noise type="gaussian">
+                <mean>0</mean>
+                <stddev>0.004</stddev>
+                <dynamic_bias_stddev>0.002</dynamic_bias_stddev>
+                <dynamic_bias_correlation_time>300</dynamic_bias_correlation_time>
+              </noise>
+            </z>
+          </linear_acceleration>
+        </imu>
+      </sensor>
+      <sensor name="air_pressure_sensor" type="air_pressure">
+        <gz_frame_id>base_link</gz_frame_id>
+        <always_on>1</always_on>
+        <update_rate>50</update_rate>
+        <air_pressure>
+          <pressure>
+            <noise type="gaussian">
+              <mean>0</mean>
+              <stddev>0.01</stddev>
+            </noise>
+          </pressure>
+        </air_pressure>
+      </sensor>
+      <sensor name="magnetometer_sensor" type="magnetometer">
+        <gz_frame_id>base_link</gz_frame_id>
+        <always_on>1</always_on>
+        <update_rate>100</update_rate>
+        <magnetometer>
+          <!-- TODO: update to fix units and coordinate system when we move past Harmonic -->
+          <!-- See https://github.com/gazebosim/gz-sim/pull/2460 -->
+          <!-- 3mgauss RMS: NOTE: noise is in tesla but sensor reports data in gauss -->
+          <!-- Noise modeled after IIS2MDC -->
+          <x>
+            <noise type="gaussian">
+              <stddev>0.0001</stddev>
+            </noise>
+          </x>
+          <y>
+            <noise type="gaussian">
+              <stddev>0.0001</stddev>
+            </noise>
+          </y>
+          <z>
+            <noise type="gaussian">
+              <stddev>0.0001</stddev>
+            </noise>
+          </z>
+        </magnetometer>
+      </sensor>
+      <sensor name="navsat_sensor" type="navsat">
+        <gz_frame_id>base_link</gz_frame_id>
+        <always_on>1</always_on>
+        <update_rate>30</update_rate>
+      </sensor>
+    </link>
+
+    <!-- Sağ Kanat -->
+    <link name="right_wing">
+      <pose relative_to="base_link">-0.049295 -0.348685 -2.107e-03 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.40</mass>
+        <inertia>
+          <ixx>0.026355189</ixx>
+          <iyy>8.154661e-03</iyy>
+          <izz>0.034187706</izz>
+          <ixy>-3.774009e-03</ixy>
+          <ixz>-5.70608e-04</ixz>
+          <iyz>-4.40056e-04</iyz>
+        </inertia>
+      </inertial>
+      <collision name="right_wing_collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://burkut_test/meshes/sagkanat.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <max_vel>10</max_vel>
+              <min_depth>0.01</min_depth>
+            </ode>
+          </contact>
+          <friction>
+            <ode />
+          </friction>
+        </surface>
+      </collision>
+      <visual name="right_wing_visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://burkut_test/meshes/sagkanat.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <ambient>0.25 0.88 0.82 1.0</ambient>
+          <diffuse>0.25 0.88 0.82 1.0</diffuse>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <velocity_decay />
+      <self_collide>0</self_collide>
+    </link>
+    <joint name="right_wing_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>right_wing</child>
+    </joint>
+
+    <!-- Sol Kanat -->
+    <link name="left_wing">
+      <pose relative_to="base_link">-0.049295 0.348685 -2.107e-03 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.40</mass>
+        <inertia>
+          <ixx>0.026351893</ixx>
+          <iyy>8.15468e-03</iyy>
+          <izz>0.034184509</izz>
+          <ixy>3.773983e-03</ixy>
+          <ixz>-5.7062e-04</ixz>
+          <iyz>4.39713e-04</iyz>
+        </inertia>
+      </inertial>
+      <collision name="left_wing_collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://burkut_test/meshes/solkanat.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <max_vel>10</max_vel>
+              <min_depth>0.01</min_depth>
+            </ode>
+          </contact>
+          <friction>
+            <ode />
+          </friction>
+        </surface>
+      </collision>
+      <visual name="left_wing_visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://burkut_test/meshes/solkanat.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <ambient>0.25 0.88 0.82 1.0</ambient>
+          <diffuse>0.25 0.88 0.82 1.0</diffuse>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <velocity_decay />
+      <self_collide>0</self_collide>
+    </link>
+    <joint name="left_wing_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>left_wing</child>
+    </joint>
+
+    <!-- ELEVATOR -->
+   <link name="elevator">
+    <pose relative_to="base_link">-0.61897 0 9.7e-04 0 0 0</pose>
+    <inertial>
+      <pose>0 0 0 0 0 0</pose>
+      <mass>0.150</mass>
+      <inertia>
+        <ixx>7.145483e-03</ixx>
+        <iyy>6.40466e-04</iyy>
+        <izz>7.767324e-03</izz>
+        <ixy>0</ixy>
+        <ixz>5.451e-06</ixz>
+        <iyz>0</iyz>
+      </inertia>
+    </inertial>
+    <collision name="elevator_collision">
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <mesh>
+          <uri>model://burkut_test/meshes/elevator.stl</uri>
+        </mesh>
+      </geometry>
+      <surface>
+        <contact>
+          <ode>
+            <max_vel>10</max_vel>
+            <min_depth>0.01</min_depth>
+          </ode>
+        </contact>
+        <friction>
+          <ode />
+        </friction>
+      </surface>
+    </collision>
+    <visual name="elevator_visual">
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <mesh>
+          <uri>model://burkut_test/meshes/elevator.stl</uri>
+        </mesh>
+      </geometry>
+      <material>
+        <ambient>0.25 0.88 0.82 1.0</ambient>
+        <diffuse>0.25 0.88 0.82 1.0</diffuse>
+      </material>
+    </visual>
+    <gravity>1</gravity>
+    <velocity_decay />
+    <self_collide>0</self_collide>
+    </link>
+    <joint name="elevator_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>elevator</child>
+    </joint>
+
+    <!-- RUDDER -->
+    <link name="rudder">
+      <pose relative_to="base_link">-0.627241 0 1.595e-03 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.150</mass>
+        <inertia>
+          <ixx>1.795778e-03</ixx>
+          <iyy>2.115859e-03</iyy>
+          <izz>3.28563e-04</izz>
+          <ixy>-2.8e-08</ixy>
+          <ixz>2e-09</ixz>
+          <iyz>0</iyz>
+        </inertia>
+      </inertial>
+      <collision name="rudder_collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://burkut_test/meshes/rudder.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <max_vel>10</max_vel>
+              <min_depth>0.01</min_depth>
+            </ode>
+          </contact>
+          <friction>
+            <ode />
+          </friction>
+        </surface>
+      </collision>
+      <visual name="rudder_visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://burkut_test/meshes/rudder.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <ambient>0.25 0.88 0.82 1.0</ambient>
+          <diffuse>0.25 0.88 0.82 1.0</diffuse>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <velocity_decay />
+      <self_collide>0</self_collide>
+    </link>
+    <joint name="rudder_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>rudder</child>
+    </joint>
+
+    <!-- MOTOR -->
+    <!-- motor x ekseninde ancak arkadan itiş olduğu için yawda döndürdüm. -->
+    <link name="motor">
+      <pose relative_to="base_link">-0.222841 0 0 0 0 3.1416</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.330</mass>
+        <inertia>
+          <ixx>1.4368e-05</ixx>
+          <iyy>2.1079e-05</iyy>
+          <izz>2.1079e-05</izz>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyz>0</iyz>
+        </inertia>
+      </inertial>
+      <collision name="motor_collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://burkut_test/meshes/motor.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <max_vel>10</max_vel>
+              <min_depth>0.01</min_depth>
+            </ode>
+          </contact>
+          <friction>
+            <ode />
+          </friction>
+        </surface>
+      </collision>
+      <visual name="motor_visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://burkut_test/meshes/motor.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <ambient>0.1 0.1 0.1 1.0</ambient>
+          <diffuse>0.1 0.1 0.1 1.0</diffuse>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <velocity_decay />
+      <self_collide>0</self_collide>
+    </link>
+    <joint name="motor_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>motor</child>
+    </joint>
+
+    <!-- Prop-->
+    <link name="prop">
+      <pose relative_to="base_link">-0.251539 0 0 0 0 3.1416</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.003</mass>
+        <inertia>
+          <ixx>4.5542e-05</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>4.5372e-05</iyy>
+          <iyz>-1.512e-06</iyz>
+          <izz>1.96e-07</izz>
+        </inertia>
+      </inertial>
+      <collision name="prop_collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://burkut_test/meshes/prop12.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <max_vel>10</max_vel>
+              <min_depth>0.01</min_depth>
+            </ode>
+          </contact>
+          <friction>
+            <ode />
+          </friction>
+        </surface>
+      </collision>
+      <visual name="prop_visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://burkut_test/meshes/prop12.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <ambient>0.1 0.1 0.1 1.0</ambient>
+          <diffuse>0.1 0.1 0.1 1.0</diffuse>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <velocity_decay />
+      <self_collide>0</self_collide>
+    </link>
+    <joint name="prop_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>prop</child>
+    </joint>
+  </model>
+</sdf>
